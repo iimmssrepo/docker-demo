@@ -1,9 +1,5 @@
 node {
    def commit_id
-   environment {
-        npm_config_cache = 'npm-cache'
-        HOME = '.'
-    }
    stage('Preparation') {
      checkout scm
      sh "git rev-parse --short HEAD > .git/commit-id"
@@ -16,6 +12,10 @@ node {
        sh 'npm install --only=dev'
        sh 'npm test'
      }
+     environment {
+        npm_config_cache = 'npm-cache'
+        HOME = '.'
+    }
    }
    stage('test with a DB') {
      def mysql = docker.image('mysql').run("-e MYSQL_ALLOW_EMPTY_PASSWORD=yes") 
